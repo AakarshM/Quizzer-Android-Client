@@ -183,7 +183,14 @@ public class Session extends AppCompatActivity {
     }
     @Override
     public void onBackPressed() {
-        socket.emit("disconnect");
+        JSONObject disconnectObj = new JSONObject();
+        try {
+            disconnectObj.put("room", JOINED_ROOM);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        socket.emit("disconnectStudent", disconnectObj);
+        System.out.println("Back button pressed");
         socket.disconnect();
         super.onBackPressed();
         return;
