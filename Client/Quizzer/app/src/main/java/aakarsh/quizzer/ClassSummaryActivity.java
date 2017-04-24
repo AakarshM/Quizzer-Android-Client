@@ -2,7 +2,9 @@ package aakarsh.quizzer;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
@@ -53,7 +55,7 @@ public class ClassSummaryActivity extends AppCompatActivity {
     public void retrieveClassInfo(){
         JSONObject classInfo = new JSONObject();
         try {
-            classInfo.put("className", CLASS_NAME.toUpperCase());
+            classInfo.put("className", CLASS_NAME);
         }catch (Exception e){
 
         }
@@ -70,6 +72,9 @@ public class ClassSummaryActivity extends AppCompatActivity {
                             int totalAsked = response.getInt("total"); //total ASKED
                             int totalPointsPossible = response.getInt("total")*2;
                             JSONArray answers = response.getJSONArray("answers");
+                            //System.out.println("TotalAsked: " + totalAsked + " total score: " + score);
+                            //Log.v("TG", String.valueOf(totalAsked));
+                            Toast.makeText(getApplicationContext(), String.valueOf(totalAsked), Toast.LENGTH_SHORT).show();
                             scoreField.setText(score);
                             teacherField.setText(response.getString("teacher"));
                             rawTotalField.setText(String.valueOf(totalAsked));
