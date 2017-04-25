@@ -35,12 +35,14 @@ import static aakarsh.quizzer.Constants.ADD_CLASS;
 import static aakarsh.quizzer.Constants.CLASS_LIST;
 import static aakarsh.quizzer.Constants.CLASS_NAME;
 import static aakarsh.quizzer.Constants.HEADER;
+import static aakarsh.quizzer.Constants.TEACHER_EMAIL;
 
 public class ClassListActivityPerformance extends AppCompatActivity {
 
     ListView lview;
     ArrayAdapter listAdapter;
     ArrayList<String> classList = new ArrayList<>();
+    ArrayList<String> instructorList = new ArrayList<>();
     FloatingActionButton fab;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -95,13 +97,19 @@ public class ClassListActivityPerformance extends AppCompatActivity {
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                        System.out.println(response);
+                        //System.out.println(response);
                         try {
                             JSONObject object = new JSONObject(response);
                             JSONArray arrayOfClasses = object.getJSONArray("classList");
                             for(int i = 0; i < arrayOfClasses.length(); i++){
                                 classList.add(arrayOfClasses.getString(i));
                             }
+
+                            JSONArray arrayOfInstructors = object.getJSONArray("instructorList");
+                            for(int i = 0; i < arrayOfInstructors.length(); i++){
+                                instructorList.add(arrayOfInstructors.getString(i));
+                            }
+
                             generateList();
 
                         } catch (JSONException e){
@@ -141,7 +149,7 @@ public class ClassListActivityPerformance extends AppCompatActivity {
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
-                        System.out.println(response);
+                       // System.out.println(response);
                         finish();
                         startActivity(getIntent());
                     }
@@ -169,7 +177,7 @@ public class ClassListActivityPerformance extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 CLASS_NAME = classList.get(position);
-
+                TEACHER_EMAIL = instructorList.get(position);
                     Intent ClassSummary = new Intent(getApplicationContext(), ClassSummaryActivity.class);
                     startActivity(ClassSummary);
 

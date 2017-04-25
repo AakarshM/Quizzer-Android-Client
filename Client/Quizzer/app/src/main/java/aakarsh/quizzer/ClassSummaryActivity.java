@@ -25,6 +25,7 @@ import java.util.Map;
 
 import static aakarsh.quizzer.Constants.HEADER;
 import static aakarsh.quizzer.Constants.*;
+import static android.webkit.ConsoleMessage.MessageLevel.LOG;
 
 public class ClassSummaryActivity extends AppCompatActivity {
 
@@ -42,7 +43,7 @@ public class ClassSummaryActivity extends AppCompatActivity {
         rawCorField = (TextView) findViewById(R.id.rawCorrectField);
         rawTotalField = (TextView) findViewById(R.id.rawTotalPossibleField);
         teacherField = (TextView) findViewById(R.id.teachField);
-        classNameView.setText(CLASS_NAME);
+        classNameView.setText(CLASS_NAME.toUpperCase());
         retrieveClassInfo();
     }
     @Override
@@ -62,6 +63,37 @@ public class ClassSummaryActivity extends AppCompatActivity {
 
         RequestQueue queue = Volley.newRequestQueue(this);
 
+        String getURL = ATTENDANCE_SUMMARY + "?course=" + CLASS_NAME + "&instructor=" + TEACHER_EMAIL;
+        Log.d("REQUEST", getURL);
+        StringRequest attendanceRequest = new StringRequest(Request.Method.GET, getURL,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        Log.d("REQUEST", response);
+                        if(response.equals("nill")){
+                            Toast.makeText(getApplicationContext(), "You are not enrolled in this section", Toast.LENGTH_SHORT).show();
+                            return;
+                        }
+                        try {
+                            JSONObject resp = new JSONObject(response);
+                            String totalAsked = String.valueOf(resp.getInt("attendance"));
+                            String totalPointsPossible = String.valueOf((2*resp.getInt("attendance")));
+                            rawTotalField.setText(String.valueOf(totalAsked));
+                            totalField.setText(String.valueOf(totalPointsPossible));
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(getApplicationContext(), "Error fetching profile", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+
+
         JsonObjectRequest addClassQueue = new JsonObjectRequest(Request.Method.POST, CLASS_SUMMARY, classInfo, ///JS (object goes right after url)
                 new Response.Listener<JSONObject>() {
                     @Override
@@ -74,11 +106,11 @@ public class ClassSummaryActivity extends AppCompatActivity {
                             JSONArray answers = response.getJSONArray("answers");
                             //System.out.println("TotalAsked: " + totalAsked + " total score: " + score);
                             //Log.v("TG", String.valueOf(totalAsked));
-                            Toast.makeText(getApplicationContext(), String.valueOf(totalAsked), Toast.LENGTH_SHORT).show();
+                            //Toast.makeText(getApplicationContext(), String.valueOf(totalAsked), Toast.LENGTH_SHORT).show();
                             scoreField.setText(score);
                             teacherField.setText(response.getString("teacher"));
-                            rawTotalField.setText(String.valueOf(totalAsked));
-                            totalField.setText(String.valueOf(totalPointsPossible));
+                            //rawTotalField.setText(String.valueOf(totalAsked));
+                            //totalField.setText(String.valueOf(totalPointsPossible));
                             rawCorField.setText(String.valueOf((response.getInt("score") - response.getInt("score")%2)/2));
 
                             int len = answers.length();
@@ -99,6 +131,7 @@ public class ClassSummaryActivity extends AppCompatActivity {
             return headers;
         }};
 
+        queue.add(attendanceRequest);
         queue.add(addClassQueue); //Get class info
 
     }
