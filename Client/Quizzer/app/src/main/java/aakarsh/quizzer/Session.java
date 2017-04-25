@@ -197,15 +197,6 @@ public class Session extends AppCompatActivity {
     }
 
 
-    public void joinConnection(){
-           /* JSONObject obj = new JSONObject();
-            try {
-                obj.put("room", "ROOM1");
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }*/
-
-    }
 
     public void sendAnswerToServer(){
         //put request
@@ -253,30 +244,132 @@ public class Session extends AppCompatActivity {
 
     public View.OnClickListener optionAListener = new View.OnClickListener() {
         public void onClick (View view){
-            answer = "A";
-            answerChoice.setText(answer);
+            if(answer.equals("")){
+                //send answer 1st time
+                answer = "A";
+                answerChoice.setText(answer);
+                JSONObject answerInfo = new JSONObject();
+                try {
+                    answerInfo.put("answer", answer);
+                    answerInfo.put("room", Integer.parseInt(JOINED_ROOM));
+                }catch (Exception e){
+
+                }
+                socket.emit("sendAnswer", answerInfo);
+            } else{
+                //previously answered
+                String prev = answer;
+                answer = "A";
+                answerChoice.setText(answer);
+                JSONObject answerInfo = new JSONObject();
+                try {
+                    answerInfo.put("previous", prev);
+                    answerInfo.put("answer", answer);
+                    answerInfo.put("room", Integer.parseInt(JOINED_ROOM));
+                }catch (Exception e){
+
+                }
+                socket.emit("previouslyAnsweredSendAnswer", answerInfo);
+            }
+
+
         }};
 
     public View.OnClickListener optionBListener = new View.OnClickListener() {
         public void onClick (View view){
-            answer = "B";
-            answerChoice.setText(answer);
+            if(answer.equals("")){
+                //send answer 1st time
+                answer = "B";
+                answerChoice.setText(answer);
+                JSONObject answerInfo = new JSONObject();
+                try {
+                    answerInfo.put("answer", answer);
+                    answerInfo.put("room", Integer.parseInt(JOINED_ROOM));
+                }catch (Exception e){
+
+                }
+                socket.emit("sendAnswer", answerInfo);
+            } else{
+                //previously answered
+                String prev = answer;
+                answer = "B";
+                answerChoice.setText(answer);
+                JSONObject answerInfo = new JSONObject();
+                try {
+                    answerInfo.put("previous", prev);
+                    answerInfo.put("answer", answer);
+                    answerInfo.put("room", Integer.parseInt(JOINED_ROOM));
+                }catch (Exception e){
+
+                }
+                socket.emit("previouslyAnsweredSendAnswer", answerInfo);
+            }
         }};
 
     public View.OnClickListener optionCListener = new View.OnClickListener() {
         public void onClick (View view){
-            answer = "C";
-            answerChoice.setText(answer);
+            if(answer.equals("")){
+                //send answer 1st time
+                answer = "C";
+                answerChoice.setText(answer);
+                JSONObject answerInfo = new JSONObject();
+                try {
+                    answerInfo.put("answer", answer);
+                    answerInfo.put("room", Integer.parseInt(JOINED_ROOM));
+                }catch (Exception e){
+
+                }
+                socket.emit("sendAnswer", answerInfo);
+            } else{
+                //previously answered
+                String prev = answer;
+                answer = "C";
+                answerChoice.setText(answer);
+                JSONObject answerInfo = new JSONObject();
+                try {
+                    answerInfo.put("previous", prev);
+                    answerInfo.put("answer", answer);
+                    answerInfo.put("room", Integer.parseInt(JOINED_ROOM));
+                }catch (Exception e){
+
+                }
+                socket.emit("previouslyAnsweredSendAnswer", answerInfo);
+            }
         }};
 
     public View.OnClickListener optionDListener = new View.OnClickListener() {
         public void onClick (View view){
-            answer = "D";
-            answerChoice.setText(answer);
+            if(answer.equals("")){
+                //send answer 1st time
+                answer = "D";
+                answerChoice.setText(answer);
+                JSONObject answerInfo = new JSONObject();
+                try {
+                    answerInfo.put("answer", answer);
+                    answerInfo.put("room", Integer.parseInt(JOINED_ROOM));
+                }catch (Exception e){
+
+                }
+                socket.emit("sendAnswer", answerInfo);
+            } else{
+                //previously answered
+                String prev = answer;
+                answer = "D";
+                answerChoice.setText(answer);
+                JSONObject answerInfo = new JSONObject();
+                try {
+                    answerInfo.put("previous", prev);
+                    answerInfo.put("answer", answer);
+                    answerInfo.put("room", Integer.parseInt(JOINED_ROOM));
+                }catch (Exception e){
+
+                }
+                socket.emit("previouslyAnsweredSendAnswer", answerInfo);
+            }
         }};
 
 
-    //UI THREADS
+    //UI THREAD
 
     public void makeToast(final String toMakeToastWith){
         runOnUiThread(new Runnable() {

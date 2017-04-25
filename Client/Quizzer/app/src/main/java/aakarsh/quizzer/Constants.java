@@ -5,7 +5,7 @@ package aakarsh.quizzer;
  */
 
 public class Constants {
-    public static final String BASE_URL = "http://a24cc737.ngrok.io"; //get
+    public static final String BASE_URL = "http://32facc11.ngrok.io"; //get
     public static final String SIGNUP_STUDENT = BASE_URL + "/students"; //post
     public static final String LOGIN_STUDENT = BASE_URL + "/students" + "/login"; //post
     public static final String SIGNUP_TEACHER = BASE_URL + "/teachers"; //post
